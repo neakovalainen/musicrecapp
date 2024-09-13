@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% set emoji_list = [
+    "(づ ◕‿◕ )づ",
+    "(✿ ♡‿♡)",
+    "(˃ᆺ˂✿)",
+    "♡´･ᴗ･`♡",
+    "(=˃ᆺ˂=)",
+    "♫꒰･‿･๑꒱"
+] %}
+
+{% block content %}
+    <a href="/new_post" style="text-decoration: none;font-size: 16px;line-height: 1.2em;"> add a new post <span style="font-family: arial, sans-serif;">{{ emoji_list | random }}</span></a>
+    <br>
+    <a href="/profile">profile</a>
+    <br><hr>
+    {% for post in posts %}
+        {{ post.username or "@ghostposter" }}<br> 
+        {{ post.content }} <br>
+        
+        likes: {{ post.likes }} <br>
+        posted at: {{ post.creation_time.strftime("%Y-%m-%d %H:%M") }}
+        <hr>
+    {% endfor %}
+    <br>
+    <a href="/">log out</a> <!-- need to add the functionality that the user is actually logged out-->
+{% endblock %}

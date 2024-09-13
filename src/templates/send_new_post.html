@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="/send" method="POST">
+    <p>what have you been listening to lately?</p>
+    <br>
+    <textarea name="content" rows="10" cols="50"></textarea>
+    <br>
+    <input type="submit" value="send">
+</form>
+
+{% endblock %}

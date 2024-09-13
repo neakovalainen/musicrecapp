@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="/register" method="POST">
+    <p>username: </p>
+    <input type="text" name="username" required>
+    <p>password: </p>
+    <input type="password" name="password" required>
+    <p>confirm password: </p>
+    <input type="password" name="confirm_password" required>
+    {% with incorrect = get_flashed_messages() %}
+        {% if incorrect %}
+        <ul>
+            {% for message in incorrect %}
+            <li>{{message}}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+    <input type="submit" value="register">
+</form>
+<a href="/">back</a>
+{% endblock %}
