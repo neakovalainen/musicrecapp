@@ -22,3 +22,12 @@ what is the current situation of the app?
     - as of now it's just a href that takes the user to the logging in page
 - at this point, the user cannot add friends
 - the user cannot like any posts yet
+
+## How to use the app
+Follow the instructions in the course materials.
+
+1. Install dependancies with `pip install -r requirements.txt`
+2. Create a database with Postgresql
+3. Add `DATABASE_URL` and `SECRET_KEY` to your `.env` file
+4. Add tables to your database with `psql < src/tables.sql`
+5. Run the app with `flask --app src/app.py run`
