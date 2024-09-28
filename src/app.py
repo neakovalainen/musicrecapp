@@ -28,16 +28,22 @@ def handlelogin():
     result = db.session.execute(sql, {"username":username})
     user = result.fetchone()
     if not user:
-        pass #add check
+        flash("incorrect username or password")
+        return redirect("/")
     else:
         hash_value = user.password
         if check_password_hash(hash_value, password):
-            pass# both correct, flash?
+            session["username"] = username
+            print(f"User: {username} logging in with password: {password}")
+            return redirect(url_for("home"))
         else:
-            pass # incorrect password
-    print(f"User: {username} logging in with password: {password}")
-    # session["username"] = username -> plus add the checks!
-    return redirect(url_for("home"))
+            flash("incorrect username or password")
+            return redirect("/")
+
+@app.route("/logout")
+def logout():
+    del session["username"]
+    return redirect("/")
 
 @app.route("/register")
 def registerpage():
@@ -61,7 +67,6 @@ def handleregister():
     db.session.execute(sql, {"username":username, "password":hash_value})
     db.session.commit()
 
-    flash("the registeration has been succesful!")
     return redirect("/")
 
 

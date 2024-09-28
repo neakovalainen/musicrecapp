@@ -23,5 +23,5 @@
         <hr>
     {% endfor %}
     <br>
-    <a href="/">log out</a> <!-- need to add the functionality that the user is actually logged out-->
+    <a href="{{ url_for('logout') }}">log out</a> <!-- need to add the functionality that the user is actually logged out-->
 {% endblock %}
