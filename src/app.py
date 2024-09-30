@@ -34,6 +34,7 @@ def handlelogin():
         hash_value = user.password
         if check_password_hash(hash_value, password):
             session["username"] = username
+            session["user_id"] = user.id
             print(f"User: {username} logging in with password: {password}")
             return redirect(url_for("home"))
         else:
@@ -43,6 +44,7 @@ def handlelogin():
 @app.route("/logout")
 def logout():
     del session["username"]
+    del session["user_id"]
     return redirect("/")
 
 @app.route("/register")
@@ -74,12 +76,15 @@ def handleregister():
 def home():
     # add link/ button to the search thing
     sql = text("""
-        SELECT id, content, user_id, likes, creation_time
+        SELECT Posts.id, Posts.content, Posts.user_id, Posts.likes, Posts.creation_time, Users.username
         FROM Posts
+        LEFT JOIN Users
+        ON Posts.user_id = Users.id
         ORDER BY id DESC
     """)
     result = db.session.execute(sql)
     posts = result.fetchall()
+    print(posts)
     return render_template("home.html", posts=posts)
     
 
@@ -91,11 +96,11 @@ def new_post():
 def add_posts():
     content = request.form["content"]
     sql = text("""
-        INSERT INTO posts (content) 
-        VALUES (:content)
+        INSERT INTO posts (content, user_id) 
+        VALUES (:content, :user_id)
         RETURNING TRUE
     """)
-    result = db.session.execute(sql, {"content":content})
+    result = db.session.execute(sql, {"content":content, "user_id":session["user_id"]})
     success = result.fetchone() or False
     if success:
         db.session.commit()

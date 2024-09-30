@@ -15,7 +15,7 @@
     <a href="/profile">profile</a>
     <br><hr>
     {% for post in posts %}
-        {{ post.username or "@ghostposter" }}<br> 
+        @{{ post.username or "ghostposter" }}<br> 
         {{ post.content }} <br>
         
         likes: {{ post.likes }} <br>
