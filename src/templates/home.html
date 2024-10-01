@@ -18,7 +18,10 @@
         @{{ post.username or "ghostposter" }}<br> 
         {{ post.content }} <br>
         
-        likes: {{ post.likes }} <br>
+        likes: {{ post.likes }} 
+        <form action={{ "/likes/" + post.id | string }} method="POST">
+            <input type="submit" value="&lt 3">
+        </form>
         posted at: {{ post.creation_time.strftime("%Y-%m-%d %H:%M") }}
         <hr>
     {% endfor %}

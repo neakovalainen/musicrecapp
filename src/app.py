@@ -76,17 +76,31 @@ def handleregister():
 def home():
     # add link/ button to the search thing
     sql = text("""
-        SELECT Posts.id, Posts.content, Posts.user_id, Posts.likes, Posts.creation_time, Users.username
+        SELECT Posts.id, Posts.content, Posts.creation_time, Users.username, COUNT(Likes.id) as likes
         FROM Posts
         LEFT JOIN Users
         ON Posts.user_id = Users.id
-        ORDER BY id DESC
+        LEFT JOIN Likes
+        ON Posts.id = Likes.post_id
+        GROUP BY Posts.id, Users.id
+        ORDER BY Posts.id DESC
     """)
     result = db.session.execute(sql)
     posts = result.fetchall()
     print(posts)
     return render_template("home.html", posts=posts)
-    
+
+@app.route("/likes/<int:post>", methods=["POST"])
+def like(post):
+    sql = text("""
+        INSERT INTO Likes (post_id, liker_id)
+        VALUES(:post_id, :user_id)
+        ON CONFLICT DO NOTHING
+        RETURNING TRUE
+    """)
+    db.session.execute(sql, {"post_id":post, "user_id":session["user_id"]})
+    db.session.commit()
+    return redirect(url_for("home"))
 
 @app.route("/new_post")
 def new_post():

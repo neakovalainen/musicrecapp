@@ -8,7 +8,6 @@ CREATE TABLE Posts (
   id  SERIAL PRIMARY KEY,
   content TEXT,
   user_id  INTEGER,
-  likes  INTEGER DEFAULT 0,
   creation_time  TIMESTAMP DEFAULT NOW(),
 
   FOREIGN KEY (user_id) REFERENCES Users(id)
@@ -45,7 +44,9 @@ CREATE TABLE Likes (
   FOREIGN KEY (post_id) REFERENCES Posts(id)
     ON DELETE CASCADE,
   FOREIGN KEY (liker_id) REFERENCES Users(id)
-    ON DELETE CASCADE
+    ON DELETE CASCADE,
+
+  UNIQUE (post_id, liker_id)
 )
 
 -- can the users just make any kind of text based posts like in twitter, or do 
