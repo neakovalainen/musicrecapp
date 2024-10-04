@@ -54,3 +54,13 @@ def add_likes(post, user_id):
     """)
     db.session.execute(sql, {"post_id":post, "user_id":user_id})
     db.session.commit()
+
+def delete_post(post, user_id):
+    sql = text("""
+        DELETE FROM Posts
+        WHERE id = :post_id
+        AND user_id = :user_id
+    """)
+    db.session.execute(sql, {"post_id":post, "user_id":user_id})
+    db.session.commit()
+    

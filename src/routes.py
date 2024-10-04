@@ -72,6 +72,14 @@ def add_posts():
     sql_queries.add_post(content, session["user_id"])
     return redirect(url_for("home"))
 
+@app.route("/delete/<int:post>", methods=["POST"])
+def delete_post(post):
+    user_id = session.get("user_id")
+    sql_queries.delete_post(post, user_id)
+
+    return redirect(url_for("home"))
+
+
 @app.route("/profile")
 def profile():
     # does the user have a premission to view the profile?
@@ -80,4 +88,4 @@ def profile():
 @app.route("/search") # no need to add get? -> might just add anyway
 def search():
     pass
-# add searchbar, can search by user or by word in post/song or smth
+# add searchbar, can search by user or by word in post or smth
