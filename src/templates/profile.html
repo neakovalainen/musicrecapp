@@ -2,14 +2,11 @@
 
 
 {% block content %}
-<a href="/home">homepage</a>
-<p> here the user can: </p>
-<ul>
-    <li>add info about themselves</li>
-    <li>friends and the user themselves can see what posts the user has liked</li>
-    <li>maybe the user can put a profile picture?</li>
-    <li>maybe counts of how many posts the user has and how many friends</li>
-    <li>something else?</li>
-</ul>
-
+    <a href="/home">homepage</a>
+    <h1>welcome to {{ user["username"] }}'s profile</h1>
+    {% if user.id == session.user_id%}
+        <a href="/new_bio">add/change bio</a>
+    {% endif %}
+    <h4>About me:</h4>
+    <p>{{ bio[0] }}</p> 
 {% endblock %}

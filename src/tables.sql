@@ -1,7 +1,7 @@
 CREATE TABLE Users (
     id  SERIAL PRIMARY KEY, 
     username  TEXT UNIQUE,
-    password  TEXT
+    password  TEXT,
 );
 
 CREATE TABLE Posts (
@@ -47,7 +47,15 @@ CREATE TABLE Likes (
     ON DELETE CASCADE,
 
   UNIQUE (post_id, liker_id)
-)
+);
+
+CREATE TABLE Bios (
+  id  SERIAL PRIMARY KEY,
+  user_id INTEGER UNIQUE,
+  bio TEXT,
+
+  FOREIGN KEY (user_id) REFERENCES Users(id)
+);
 
 -- can the users just make any kind of text based posts like in twitter, or do 
 -- we need seperate way of posting music?

@@ -54,8 +54,10 @@ def handleregister():
 def home():
     # add link/ button to the search thing
     posts = sql_queries.get_likes()
+    print([post.user_id for post in posts])
+    user = sql_queries.right_profile(session["user_id"])
     print(posts)
-    return render_template("home.html", posts=posts)
+    return render_template("home.html", posts=posts, user=user, is_friend=is_friend)
 
 @app.route("/likes/<int:post>", methods=["POST"])
 def like(post):
@@ -79,11 +81,39 @@ def delete_post(post):
 
     return redirect(url_for("home"))
 
+@app.route("/profile/<int:id>")
+def profile(id):
+    if not is_friend(id):
+        flash("Not friends with the user :((")
+        return redirect(url_for("home"))
+    user = sql_queries.right_profile(id)
+    bio = sql_queries.get_bio(id)
+    if not bio:
+        "No bio yet"
+    print(user)
+    return render_template("profile.html", user=user, bio=bio)
 
-@app.route("/profile")
-def profile():
-    # does the user have a premission to view the profile?
-    return render_template("profile.html")
+def is_friend(id):
+    print(id)
+    return session["user_id"] == id or sql_queries.profile_permission(session["user_id"], id)
+
+@app.route("/new_bio")
+def new_bio():
+    return render_template("add_bio.html")
+
+@app.route("/add_bio", methods=["POST"])
+def add_bio():
+    bio = request.form["bio"]
+    sql_queries.add_bio(session["user_id"], bio)
+    user_id = session["user_id"]
+    return redirect(url_for("profile", id=user_id))
+
+
+@app.route("/friends/<int:id>", methods=["POST"])
+def friends(id):
+    user_id = session["user_id"]
+    sql_queries.add_friend(user_id, id)
+    return redirect(url_for("home"))
 
 @app.route("/search") # no need to add get? -> might just add anyway
 def search():
