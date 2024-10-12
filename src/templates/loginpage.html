@@ -5,20 +5,25 @@
 {% endblock %}
 
 {% block content %}
-    <h3>Login</h3>
-    <form action="/" method="POST">
-        <input type="text" name="username">
-        <input type="password" name="password">
-        <input type="submit" value="loginyay">
-    </form>
-    {% with incorrect = get_flashed_messages() %}
-        {% if incorrect %}
-        <ul>
-            {% for message in incorrect %}
-            <li>{{message}}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    {% endwith %}
-    <a href="/register"> No account yet? Click here</a>
+    <div id="login-container">
+        <div id="loginform">
+            <h3 id="loginheader">
+                Login
+            </h3>
+            <form action="/" method="POST">
+                <input type="text" name="username" class="logininput">
+                <input type="password" name="password" class="logininput">
+
+                {% with incorrect = get_flashed_messages() %}
+                    {% for message in incorrect %}
+                        <p class="errormessage">{{message}}</p>
+                    {% endfor %}
+                {% endwith %}
+
+                <input type="submit" value="loginyay" class="logininput" id="submitbutton">
+            </form>
+
+            <a href="/register" id="goregister">No account yet? Click here</a>
+        </div>
+    </div>
 {% endblock %}

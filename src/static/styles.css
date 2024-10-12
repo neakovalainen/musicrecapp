@@ -1,0 +1,57 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    background-color: antiquewhite;
+}
+
+#login-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#loginform {
+    margin: auto;
+    padding: 20px;
+    width: 300px;
+    height: fit-content; /* Use dynamic sizing, instead of fixed */
+
+    border-radius: 25px;
+    background-image: linear-gradient(to bottom right, #87A0F0, #EAB8D1);
+}
+
+#loginheader {
+    text-align: center;
+    font-size: 30px;
+    color: white;
+}
+
+.logininput {
+    display: block;
+    margin: 15px auto;
+    padding: 13px;
+    border-radius: 10px;
+}
+
+#goregister,
+.errormessage {
+    text-align: center;
+    color: white;
+}
+
+#submitbutton {
+    margin: auto;
+    font-size: 16px;
+    border-radius: 10px;
+    background-image: linear-gradient(to bottom right, #EAB8D1,#87A0F0);
+    color: white;
+}
+
+#goregister {
+    display: inline-block;
+    margin: 10px 0;
+    width: 100%;
+}
