@@ -5,23 +5,24 @@
 {% endblock %}
 
 {% block content %}
-    <form action="/register" method="POST">
-        <p>username: </p>
-        <input type="text" name="username" required>
-        <p>password: </p>
-        <input type="password" name="password" required>
-        <p>confirm password: </p>
-        <input type="password" name="confirm_password" required>
-        {% with incorrect = get_flashed_messages() %}
-            {% if incorrect %}
-            <ul>
-                {% for message in incorrect %}
-                <li>{{message}}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        {% endwith %}
-        <input type="submit" value="register">
-    </form>
-    <a href="/">back</a>
+    <div class="signing-container">
+        <div class="signingform">
+            <form action="/register" method="POST">
+                <p class="registerp">username: </p>
+                <input type="text" name="username" required class="signinginput">
+                <p class="registerp">password: </p>
+                <input type="password" name="password" required class="signinginput">
+                <p class="registerp">confirm password: </p>
+                <input type="password" name="confirm_password" required class="signinginput">
+
+                {% with incorrect = get_flashed_messages() %}
+                        {% for message in incorrect %}
+                            <p class="errormessage">{{message}}</p>
+                        {% endfor %}
+                {% endwith %}
+                <input type="submit" value="register" class="signinginput submitbutton">
+            </form>
+            <a href="/" class="gosign">back</a>
+        </div>
+    </div>
 {% endblock %}

@@ -16,33 +16,35 @@
     <br>
     <a href="{{ url_for('profile', id=user.id) }}">own profile</a>
     <br><hr>
-    {% for post in posts %}
-        <div>
-            @{{ post.username or "ghostposter" }}
-            {% if not is_friend(post.user_id) %}
-            <form action="{{ url_for('friends', id=post.user_id) }}" method="POST">
-                <input type="submit" value="add friend!">
-            </form>
-            {% endif %}
-            {% if is_friend(post.user_id) and session.user_id != post.user_id %}
-            <a href="{{ url_for('profile', id=post.user_id) }}"> visit a friend's profile</a>
-            {% endif %}
-            <br> 
-            {{ post.content }} <br>
-            <br>
-            likes: {{ post.likes }} 
-            <form action={{ '/likes/' + post.id | string }} method="POST">
-                <input type="submit" value="like &lt;3">
-            </form>
-            {% if post.username == session.username %}
-            <form action="{{ url_for('delete_post', post=post.id) }}" method="POST">
-                <input type="submit" value="delete :&#40;&#40;">
-            </form>
-            {% endif %}
-            posted at: {{ post.creation_time.strftime("%Y-%m-%d %H:%M") }}
-            <hr>
-        </div>
-    {% endfor %}
+    <div id="home">
+        {% for post in posts %}
+            <div>
+                @{{ post.username or "ghostposter" }}
+                {% if not is_friend(post.user_id) %}
+                <form action="{{ url_for('friends', id=post.user_id) }}" method="POST">
+                    <input type="submit" value="add friend!">
+                </form>
+                {% endif %}
+                {% if is_friend(post.user_id) and session.user_id != post.user_id %}
+                <a href="{{ url_for('profile', id=post.user_id) }}"> visit a friend's profile</a>
+                {% endif %}
+                <br> 
+                {{ post.content }} <br>
+                <br>
+                likes: {{ post.likes }} 
+                <form action={{ '/likes/' + post.id | string }} method="POST">
+                    <input type="submit" value="like &lt;3">
+                </form>
+                {% if post.username == session.username %}
+                <form action="{{ url_for('delete_post', post=post.id) }}" method="POST">
+                    <input type="submit" value="delete :&#40;&#40;">
+                </form>
+                {% endif %}
+                posted at: {{ post.creation_time.strftime("%Y-%m-%d %H:%M") }}
+                <hr>
+            </div>
+        {% endfor %}
+    </div>
     <br>
     <a href="{{ url_for('logout') }}">log out</a>
 {% endblock %}

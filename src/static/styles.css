@@ -7,13 +7,14 @@ body {
     background-color: antiquewhite;
 }
 
-#login-container {
+.signing-container,
+.newcontent {
     display: flex;
     flex-direction: column;
     height: 100%;
 }
 
-#loginform {
+.signingform {
     margin: auto;
     padding: 20px;
     width: 300px;
@@ -29,20 +30,20 @@ body {
     color: white;
 }
 
-.logininput {
+.signinginput {
     display: block;
     margin: 15px auto;
     padding: 13px;
     border-radius: 10px;
 }
 
-#goregister,
+.gosign,
 .errormessage {
     text-align: center;
     color: white;
 }
 
-#submitbutton {
+.submitbutton {
     margin: auto;
     font-size: 16px;
     border-radius: 10px;
@@ -50,8 +51,54 @@ body {
     color: white;
 }
 
-#goregister {
+.gosign {
     display: inline-block;
     margin: 10px 0;
     width: 100%;
+}
+
+.registerp {
+    font-size: 18px;
+    color: white;
+    text-align: center;
+}
+
+#home-container {
+    display: flex;    
+}
+
+.newcontent {
+    margin: auto;
+    
+}
+
+.contentinput {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+    background-color: #EDDCDE;
+    color: #87A0F0;
+    font-size: 16px;
+}
+
+.content-text {
+    font-size: 30px;
+    color: #87A0F0;
+    font-weight: 900;
+    text-align: center;
+}
+
+.submitcontent {
+    margin: auto;
+    font-size: 16px;
+    color: #87A0F0;
+}
+
+.new-content-text-position {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 350px;
+
 }

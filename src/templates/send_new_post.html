@@ -5,12 +5,15 @@
 {% endblock %}
 
 {% block content %}
-    <form action="/send" method="POST">
-        <p>what have you been listening to lately?</p>
-        <br>
-        <textarea name="content" rows="10" cols="50"></textarea>
-        <br>
-        <input type="submit" value="send">
-    </form>
-
+    <div class="newcontent">
+        <form action="/send" method="POST">
+            <div class="new-content-text-position">
+                <p class="content-text">what have you been listening to lately?</p>
+            </div>
+            <br>
+            <textarea name="content" rows="12" cols="45" class="contentinput" ></textarea>
+            <br>
+            <input type="submit" value="send" class="submitcontent contentinput">
+        </form>
+    </div>
 {% endblock %}
