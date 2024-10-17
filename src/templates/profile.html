@@ -4,12 +4,27 @@
     {{ user["username"] }}'s profile
 {% endblock %}
 
+{% block buttons %}
+    <form action="/home" method="get">
+        <button type="submit" class="nav-bar-buttons">homepage</button>
+    </form>
+{% endblock %}
+
 {% block content %}
-    <a href="/home">homepage</a>
-    <h1>welcome to {{ user["username"] }}'s profile</h1>
+    <h1 id="profile-h3">welcome to {{ user["username"] }}'s profile</h1>
+    <h4 id="profile-about">About me:</h4>
+    <div class="pre" id="bio-font">
+        {% if bio[0] %}
+            <p>{{ bio[0] }}</p> 
+        {% else %}
+            <p>no bio yet :&#40;&#40;</p>
+        {% endif %}
+    </div>
     {% if user.id == session.user_id%}
-        <a href="/new_bio">add/change bio</a>
+        <div id="bio-button-placement">
+            <form action="/new_bio" method="get">
+                <button type="submit" class="profile-buttons">add new bio</button>
+            </form>
+        </div>
     {% endif %}
-    <h4>About me:</h4>
-    <p>{{ bio[0] }}</p> 
 {% endblock %}

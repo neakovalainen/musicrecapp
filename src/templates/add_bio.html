@@ -4,13 +4,21 @@
     new bio
 {% endblock %}
 
-{% block content %}
-    <form action="/add_bio" method="POST">
-        <p>about me:</p>
-        <br>
-        <textarea name="bio" rows="10" cols="50"></textarea>
-        <br>
-        <input type="submit" value="add">
-    </form>
+{% block navigationbar %}
+{% endblock %}
 
+{% block content %}
+    <div class="newcontent">
+        <form action="/add_bio" method="POST">
+            <div class="new-content-text-position">
+                <p class="content-text">
+                    Tell me something about yourself <br>(づ ◕‿◕ )づ
+                </p>
+            </div>
+            <br>
+            <textarea name="bio" rows="10" cols="50" class="contentinput"></textarea>
+            <br>
+            <input type="submit" value="add" class="submitcontent contentinput">
+        </form>
+    </div>
 {% endblock %}

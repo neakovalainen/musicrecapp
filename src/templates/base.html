@@ -9,7 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+    {% block navigationbar %}
+        <div id="nav-bar">
+            {% block buttons %}
+            <!--navigation bar-->
+            {% endblock %}
+        </div>
+    {% endblock %}
+
     {% block content %}
+    <!--content of the webpage-->
     {% endblock %}
 </body>
 </html>

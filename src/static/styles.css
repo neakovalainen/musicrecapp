@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Titan+One&display=swap');
+
 html {
     height: 100%;
 }
@@ -5,6 +7,33 @@ html {
 body {
     height: 100%;
     background-color: antiquewhite;
+}
+
+#nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 12%;
+    background-color: #EDDCDE;
+    border-radius: 20px;
+    border-style: solid;
+    border-color: #87A0F0;
+    border-width: 5px;
+}
+
+.nav-bar-buttons {
+    width: 210px;
+    height: 50px;
+    background-color: #87A0F0;
+    border-radius: 15px;
+    font-family: "Titan One", sans-serif;
+    font-size: 15px;
+    color:#ebcbdb;
+}
+
+.nav-bar-buttons:hover {
+    background-color: #6f89df;
 }
 
 .signing-container,
@@ -19,18 +48,20 @@ body {
     padding: 20px;
     width: 300px;
     height: fit-content; /* Use dynamic sizing, instead of fixed */
-
     border-radius: 25px;
     background-image: linear-gradient(to bottom right, #87A0F0, #EAB8D1);
 }
 
 #loginheader {
     text-align: center;
-    font-size: 30px;
+    font-family: "Titan One", sans-serif;
+    font-size: 35px;
     color: white;
 }
 
 .signinginput {
+    font-family: "Titan One", sans-serif;
+    color: #87A0F0;
     display: block;
     margin: 15px auto;
     padding: 13px;
@@ -58,6 +89,7 @@ body {
 }
 
 .registerp {
+    font-family: "Titan One", sans-serif;
     font-size: 18px;
     color: white;
     text-align: center;
@@ -68,8 +100,7 @@ body {
 }
 
 .newcontent {
-    margin: auto;
-    
+    margin: auto; 
 }
 
 .contentinput {
@@ -83,6 +114,7 @@ body {
 }
 
 .content-text {
+    font-family: "Titan One", sans-serif;
     font-size: 30px;
     color: #87A0F0;
     font-weight: 900;
@@ -91,6 +123,9 @@ body {
 
 .submitcontent {
     margin: auto;
+    width: 80px;
+    height: 30px;
+    font-family: "Titan One", sans-serif;
     font-size: 16px;
     color: #87A0F0;
 }
@@ -100,5 +135,109 @@ body {
     margin-left: auto;
     margin-right: auto;
     width: 350px;
-
 }
+
+.pre {
+    background-color: #EDDCDE;
+    height: fit-content;
+    width: fit-content;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 25px;
+    border-style: solid;
+    border-width: 6px;
+    border-color: #EAB8D1;
+    white-space: pre-wrap;
+}
+
+.submitcontent:hover {
+    background-color: #E7CDD0;
+}
+
+.submitbutton:hover {
+    background-image: linear-gradient(to bottom right, #E6A9C7, #6F89DF);
+}
+
+#profile-about {
+    font-family: "Titan One", sans-serif;
+    font-size: 35px;
+    color: #87A0F0;
+}
+
+#bio-font {
+    font-size: 20px;
+}
+
+.profile-buttons {
+    background-color: #EDDCDE;
+    width: 140px;
+    height: 40px;
+    padding: 10px 5px;
+    border-radius: 25px;
+    border-color: #EAB8D1;
+    border-width: 3px;
+    text-decoration: none;
+    font-size: 17px;
+    color: #87A0F0;
+    font-family: "Titan One", sans-serif;
+}
+
+.profile-buttons:hover {
+    background-color: #E7CDD0;
+}
+
+#bio-button-placement {
+    padding-top: 20px;
+}
+
+#profile-h3 {
+    color:#87A0F0;
+    font-family: "Titan One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 45px;
+}
+
+#like-button {
+    background-color: #e4b8ce;
+    border-radius: 10px;
+    height: 30px;
+    width: 70px;
+    color: #7E98EC;
+    font-family: "Titan One", sans-serif;
+}
+
+#like-button:hover {
+    background-color: #e0a7c4;
+}
+
+#delete-button,
+#add-friend {
+    background-color: #87A0F0;
+    border-radius: 10px;
+    height: 30px;
+    width: fit-content;
+    color: #e6bcd1;
+    font-family: "Titan One", sans-serif;
+}
+
+#delete-button:hover,
+#add-friend:hover {
+    background-color: #6F89DF;
+}
+
+.post {
+    margin: 15px auto;
+    height: fit-content;
+    width: 100%;
+    max-width: 700px;
+    background-color: #EBCBDB;
+    border-radius: 10px;
+    padding: 20px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+
+

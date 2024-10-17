@@ -4,6 +4,9 @@
     new post
 {% endblock %}
 
+{% block navigationbar %}
+{% endblock %}
+
 {% block content %}
     <div class="newcontent">
         <form action="/send" method="POST">
@@ -14,6 +17,7 @@
             <textarea name="content" rows="12" cols="45" class="contentinput" ></textarea>
             <br>
             <input type="submit" value="send" class="submitcontent contentinput">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         </form>
     </div>
 {% endblock %}

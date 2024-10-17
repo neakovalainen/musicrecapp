@@ -11,18 +11,27 @@
 {% block title %}
     homepage
 {% endblock %}
-{% block content %}
-    <a href="/new_post" style="text-decoration: none;font-size: 16px;line-height: 1.2em;"> add a new post <span style="font-family: arial, sans-serif;">{{ emoji_list | random }}</span></a>
-    <br>
-    <a href="{{ url_for('profile', id=user.id) }}">own profile</a>
-    <br><hr>
+
+{% block buttons %}
+    <form action="/new_post" method="get">
+        <button type="submit" class="nav-bar-buttons"> new post {{ emoji_list | random }}</button>
+    </form>
+    <form action="{{ url_for('profile', id=user.id) }}" method="get">
+        <button type="submit" class="nav-bar-buttons">own profile</button>
+    </form>
+    <form action="/logout" method="get">
+        <button type="submit" class="nav-bar-buttons">log out</button>
+    </form>
+{% endblock %}
+
+{% block content  %}
     <div id="home">
         {% for post in posts %}
-            <div>
+            <div class="post">
                 @{{ post.username or "ghostposter" }}
                 {% if not is_friend(post.user_id) %}
                 <form action="{{ url_for('friends', id=post.user_id) }}" method="POST">
-                    <input type="submit" value="add friend!">
+                    <input type="submit" value="add friend!" id="add-friend">
                 </form>
                 {% endif %}
                 {% if is_friend(post.user_id) and session.user_id != post.user_id %}
@@ -33,18 +42,15 @@
                 <br>
                 likes: {{ post.likes }} 
                 <form action={{ '/likes/' + post.id | string }} method="POST">
-                    <input type="submit" value="like &lt;3">
+                    <button type="submit" id="like-button"> like &lt;33 </button>
                 </form>
                 {% if post.username == session.username %}
                 <form action="{{ url_for('delete_post', post=post.id) }}" method="POST">
-                    <input type="submit" value="delete :&#40;&#40;">
+                    <input type="submit" value="delete :&#40;&#40;" id="delete-button">
                 </form>
                 {% endif %}
                 posted at: {{ post.creation_time.strftime("%Y-%m-%d %H:%M") }}
-                <hr>
             </div>
         {% endfor %}
     </div>
-    <br>
-    <a href="{{ url_for('logout') }}">log out</a>
 {% endblock %}

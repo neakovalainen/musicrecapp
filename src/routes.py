@@ -1,7 +1,8 @@
 from app import app
 import sql_queries
-from flask import redirect, render_template, request, session, url_for, flash
+from flask import redirect, render_template, request, session, url_for, flash, abort
 from werkzeug.security import check_password_hash, generate_password_hash
+import secrets
 
 @app.route("/", methods=["GET"]) 
 def loginpage():
@@ -20,6 +21,7 @@ def handlelogin():
         if check_password_hash(hash_value, password):
             session["username"] = username
             session["user_id"] = user.id
+            session["csrf_token"] = secrets.token_hex(16)
             print(f"User: {username} logging in with password: {password}")
             return redirect(url_for("home"))
         else:
@@ -71,6 +73,10 @@ def new_post():
 @app.route("/send", methods=["POST"])
 def add_posts():
     content = request.form["content"]
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
+    else:
+        print("workkk")
     sql_queries.add_post(content, session["user_id"])
     return redirect(url_for("home"))
 
