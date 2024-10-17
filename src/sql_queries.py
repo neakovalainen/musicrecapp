@@ -1,5 +1,5 @@
-from db import db
 from sqlalchemy.sql import text
+from db import db
 
 def get_username(username):
     sql = text("""
@@ -72,7 +72,7 @@ def profile_permission(user_id, friend_id):
     """)
     result = db.session.execute(sql, {"user_id":user_id, "friend_id":friend_id})
     return result.fetchone() is not None
-    
+
 def right_profile(user_id):
     sql = text("""
         SELECT id, username

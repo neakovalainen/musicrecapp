@@ -1,12 +1,12 @@
-from app import app
-import sql_queries
 from flask import redirect, render_template, request, session, url_for, flash, abort
 from werkzeug.security import check_password_hash, generate_password_hash
+import sql_queries
 import secrets
+from app import app
 
-@app.route("/", methods=["GET"]) 
+@app.route("/", methods=["GET"])
 def loginpage():
-    return render_template("loginpage.html", title="login") 
+    return render_template("loginpage.html", title="login")
 
 @app.route("/", methods=["POST"])
 def handlelogin():
@@ -16,17 +16,16 @@ def handlelogin():
     if not user:
         flash("incorrect username or password")
         return redirect("/")
-    else:
-        hash_value = user.password
-        if check_password_hash(hash_value, password):
-            session["username"] = username
-            session["user_id"] = user.id
-            session["csrf_token"] = secrets.token_hex(16)
-            print(f"User: {username} logging in with password: {password}")
-            return redirect(url_for("home"))
-        else:
-            flash("incorrect username or password")
-            return redirect("/")
+    hash_value = user.password
+    if check_password_hash(hash_value, password):
+        session["username"] = username
+        session["user_id"] = user.id
+        session["csrf_token"] = secrets.token_hex(16)
+        print(f"User: {username} logging in with password: {password}")
+        return redirect(url_for("home"))
+
+    flash("incorrect username or password")
+    return redirect("/")
 
 @app.route("/logout")
 def logout():
@@ -47,7 +46,7 @@ def handleregister():
     if confirm_password != password:
         flash("the passwords do not match! please try again")
         return redirect("/register")
-    
+
     hash_value = generate_password_hash(password)
     sql_queries.add_users(username, hash_value)
     return redirect("/")
@@ -94,9 +93,6 @@ def profile(id):
         return redirect(url_for("home"))
     user = sql_queries.right_profile(id)
     bio = sql_queries.get_bio(id)
-    if not bio:
-        "No bio yet"
-    print(user)
     return render_template("profile.html", user=user, bio=bio)
 
 def is_friend(id):
