@@ -9,6 +9,10 @@ body {
     background-color: antiquewhite;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 #nav-bar {
     display: flex;
     align-items: center;
