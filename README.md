@@ -21,7 +21,7 @@ Some functionalities that I've thought of so far:
 - the user can delete their own posts
 
 ## In the future
--I would like to add profile pictures
+- I would like to add profile pictures
 - possibility to delete likes and comment on posts
 - like and friends counts on profiles
 
