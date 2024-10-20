@@ -194,7 +194,7 @@ body {
     padding-top: 20px;
 }
 
-#profile-h3 {
+#profile-h1 {
     color:#87A0F0;
     font-family: "Titan One", sans-serif;
     font-weight: 400;
@@ -244,4 +244,9 @@ body {
 }
 
 
-
+#liked-posts {
+    text-align: center;
+    font-size: 25px;
+    font-family: "Titan One", sans-serif;
+    color: #87A0F0;
+}

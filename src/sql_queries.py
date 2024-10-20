@@ -19,7 +19,7 @@ def add_users(username, hash_value):
     db.session.execute(sql, {"username":username, "password":hash_value})
     db.session.commit()
 
-def get_likes():
+def get_posts():
     sql = text("""
         SELECT Posts.id, Posts.user_id as user_id, Posts.content, Posts.creation_time, Users.username, COUNT(Likes.id) as likes
         FROM Posts
@@ -31,6 +31,22 @@ def get_likes():
         ORDER BY Posts.id DESC
     """)
     result = db.session.execute(sql)
+    posts = result.fetchall()
+    return posts
+
+def get_liked_posts(user_id):
+    sql = text("""
+        SELECT Posts.id, Posts.user_id as user_id, Posts.content, Posts.creation_time, Users.username, COUNT(Likes.id) as likes
+        FROM Posts
+        LEFT JOIN Users
+        ON Posts.user_id = Users.id
+        LEFT JOIN Likes
+        ON Posts.id = Likes.post_id
+        WHERE Likes.liker_id = :user_id
+        GROUP BY Posts.id, Users.id
+        ORDER BY Posts.id DESC
+    """)
+    result = db.session.execute(sql, {"user_id": user_id})
     posts = result.fetchall()
     return posts
 

@@ -54,7 +54,7 @@ def handleregister():
 @app.route("/home")
 def home():
     # add link/ button to the search thing
-    posts = sql_queries.get_likes()
+    posts = sql_queries.get_posts()
     print([post.user_id for post in posts])
     user = sql_queries.right_profile(session["user_id"])
     print(posts)
@@ -63,7 +63,9 @@ def home():
 @app.route("/likes/<int:post>", methods=["POST"])
 def like(post):
     sql_queries.add_likes(post, session["user_id"])
-    return redirect(url_for("home"))
+    # Reload the page
+    return redirect(request.referrer)
+    # return redirect(url_for("home"))
 
 @app.route("/new_post")
 def new_post():
@@ -93,7 +95,8 @@ def profile(id):
         return redirect(url_for("home"))
     user = sql_queries.right_profile(id)
     bio = sql_queries.get_bio(id)
-    return render_template("profile.html", user=user, bio=bio)
+    posts = sql_queries.get_liked_posts(id)
+    return render_template("profile.html", user=user, bio=bio, liked_posts=posts, is_friend=is_friend)
 
 def is_friend(id):
     print(id)
