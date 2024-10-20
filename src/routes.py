@@ -4,18 +4,35 @@ import sql_queries
 import secrets
 from app import app
 
+import functools
+
+def authenticate(f):
+    @functools.wraps(f)
+    def wrapper(*args, **kwargs):
+        if "user_id" not in session:
+            return redirect(url_for("loginpage"))
+        return f(*args, **kwargs)
+    return wrapper
+
 @app.route("/", methods=["GET"])
 def loginpage():
+    if "user_id" in session:
+        return redirect(url_for("home"))
     return render_template("loginpage.html", title="login")
 
 @app.route("/", methods=["POST"])
 def handlelogin():
-    username = request.form["username"]
-    password = request.form["password"]
+    if "user_id" in session:
+        return abort(403)
+    username = request.form.get("username", None)
+    password = request.form.get("password", None)
+    if not username or not password:
+        flash("no username or password given")
+        return redirect(url_for("loginpage"))
     user = sql_queries.get_username(username)
     if not user:
         flash("incorrect username or password")
-        return redirect("/")
+        return redirect(url_for("loginpage"))
     hash_value = user.password
     if check_password_hash(hash_value, password):
         session["username"] = username
@@ -25,13 +42,14 @@ def handlelogin():
         return redirect(url_for("home"))
 
     flash("incorrect username or password")
-    return redirect("/")
+    return redirect(url_for("loginpage"))
 
 @app.route("/logout")
+@authenticate
 def logout():
-    del session["username"]
-    del session["user_id"]
-    return redirect("/")
+    for item in list(session):
+        session.pop(item, None)
+    return redirect(url_for("loginpage"))
 
 @app.route("/register")
 def registerpage():
@@ -39,19 +57,24 @@ def registerpage():
 
 @app.route("/register", methods=["POST"])
 def handleregister():
-    username = request.form["username"]
-    password = request.form["password"]
-    confirm_password = request.form["confirm_password"]
+    username = request.form.get("username", None)
+    password = request.form.get("password", None)
+    confirm_password = request.form.get("confirm_password", None)
+
+    if not username or not password or not confirm_password:
+        flash("no username or password")
+        redirect(url_for("registerpage"))
 
     if confirm_password != password:
         flash("the passwords do not match! please try again")
-        return redirect("/register")
+        return redirect(url_for("registerpage"))
 
     hash_value = generate_password_hash(password)
     sql_queries.add_users(username, hash_value)
-    return redirect("/")
+    return redirect(url_for("loginpage"))
 
 @app.route("/home")
+@authenticate
 def home():
     # add link/ button to the search thing
     posts = sql_queries.get_posts()
@@ -61,6 +84,7 @@ def home():
     return render_template("home.html", posts=posts, user=user, is_friend=is_friend)
 
 @app.route("/likes/<int:post>", methods=["POST"])
+@authenticate
 def like(post):
     sql_queries.add_likes(post, session["user_id"])
     # Reload the page
@@ -68,12 +92,14 @@ def like(post):
     # return redirect(url_for("home"))
 
 @app.route("/new_post")
+@authenticate
 def new_post():
     return render_template("send_new_post.html")
 
 @app.route("/send", methods=["POST"])
+@authenticate
 def add_posts():
-    content = request.form["content"]
+    content = request.form.get("content", None)
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
     else:
@@ -82,6 +108,7 @@ def add_posts():
     return redirect(url_for("home"))
 
 @app.route("/delete/<int:post>", methods=["POST"])
+@authenticate
 def delete_post(post):
     user_id = session.get("user_id")
     sql_queries.delete_post(post, user_id)
@@ -89,6 +116,7 @@ def delete_post(post):
     return redirect(url_for("home"))
 
 @app.route("/profile/<int:id>")
+@authenticate
 def profile(id):
     if not is_friend(id):
         flash("Not friends with the user :((")
@@ -103,18 +131,20 @@ def is_friend(id):
     return session["user_id"] == id or sql_queries.profile_permission(session["user_id"], id)
 
 @app.route("/new_bio")
+@authenticate
 def new_bio():
     return render_template("add_bio.html")
 
 @app.route("/add_bio", methods=["POST"])
+@authenticate
 def add_bio():
-    bio = request.form["bio"]
+    bio = request.form.get("bio", None)
     sql_queries.add_bio(session["user_id"], bio)
     user_id = session["user_id"]
     return redirect(url_for("profile", id=user_id))
 
-
 @app.route("/friends/<int:id>", methods=["POST"])
+@authenticate
 def friends(id):
     user_id = session["user_id"]
     sql_queries.add_friend(user_id, id)
