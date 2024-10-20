@@ -99,10 +99,6 @@ body {
     text-align: center;
 }
 
-#home-container {
-    display: flex;    
-}
-
 .newcontent {
     margin: auto; 
 }

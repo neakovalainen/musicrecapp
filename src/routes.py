@@ -1,10 +1,9 @@
+import secrets
+import functools
 from flask import redirect, render_template, request, session, url_for, flash, abort
 from werkzeug.security import check_password_hash, generate_password_hash
 import sql_queries
-import secrets
 from app import app
-
-import functools
 
 def authenticate(f):
     @functools.wraps(f)
@@ -13,6 +12,9 @@ def authenticate(f):
             return redirect(url_for("loginpage"))
         return f(*args, **kwargs)
     return wrapper
+
+
+# logging in, out and registration
 
 @app.route("/", methods=["GET"])
 def loginpage():
@@ -38,9 +40,7 @@ def handlelogin():
         session["username"] = username
         session["user_id"] = user.id
         session["csrf_token"] = secrets.token_hex(16)
-        print(f"User: {username} logging in with password: {password}")
         return redirect(url_for("home"))
-
     flash("incorrect username or password")
     return redirect(url_for("loginpage"))
 
@@ -60,36 +60,46 @@ def handleregister():
     username = request.form.get("username", None)
     password = request.form.get("password", None)
     confirm_password = request.form.get("confirm_password", None)
-
     if not username or not password or not confirm_password:
         flash("no username or password")
         redirect(url_for("registerpage"))
-
     if confirm_password != password:
         flash("the passwords do not match! please try again")
         return redirect(url_for("registerpage"))
-
     hash_value = generate_password_hash(password)
     sql_queries.add_users(username, hash_value)
     return redirect(url_for("loginpage"))
 
+# homepage
+
 @app.route("/home")
 @authenticate
 def home():
-    # add link/ button to the search thing
     posts = sql_queries.get_posts()
-    print([post.user_id for post in posts])
     user = sql_queries.right_profile(session["user_id"])
-    print(posts)
     return render_template("home.html", posts=posts, user=user, is_friend=is_friend)
 
 @app.route("/likes/<int:post>", methods=["POST"])
 @authenticate
 def like(post):
     sql_queries.add_likes(post, session["user_id"])
-    # Reload the page
-    return redirect(request.referrer)
-    # return redirect(url_for("home"))
+    return redirect(request.referrer) # Reload the page
+
+@app.route("/delete/<int:post>", methods=["POST"])
+@authenticate
+def delete_post(post):
+    user_id = session.get("user_id")
+    sql_queries.delete_post(post, user_id)
+    return redirect(url_for("home"))
+
+@app.route("/friends/<int:id>", methods=["POST"])
+@authenticate
+def friends(id):
+    user_id = session["user_id"]
+    sql_queries.add_friend(user_id, id)
+    return redirect(url_for("home"))
+
+# new post
 
 @app.route("/new_post")
 @authenticate
@@ -102,18 +112,10 @@ def add_posts():
     content = request.form.get("content", None)
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
-    else:
-        print("workkk")
     sql_queries.add_post(content, session["user_id"])
     return redirect(url_for("home"))
 
-@app.route("/delete/<int:post>", methods=["POST"])
-@authenticate
-def delete_post(post):
-    user_id = session.get("user_id")
-    sql_queries.delete_post(post, user_id)
-
-    return redirect(url_for("home"))
+# profile
 
 @app.route("/profile/<int:id>")
 @authenticate
@@ -125,10 +127,6 @@ def profile(id):
     bio = sql_queries.get_bio(id)
     posts = sql_queries.get_liked_posts(id)
     return render_template("profile.html", user=user, bio=bio, liked_posts=posts, is_friend=is_friend)
-
-def is_friend(id):
-    print(id)
-    return session["user_id"] == id or sql_queries.profile_permission(session["user_id"], id)
 
 @app.route("/new_bio")
 @authenticate
@@ -143,14 +141,5 @@ def add_bio():
     user_id = session["user_id"]
     return redirect(url_for("profile", id=user_id))
 
-@app.route("/friends/<int:id>", methods=["POST"])
-@authenticate
-def friends(id):
-    user_id = session["user_id"]
-    sql_queries.add_friend(user_id, id)
-    return redirect(url_for("home"))
-
-@app.route("/search") # no need to add get? -> might just add anyway
-def search():
-    pass
-# add searchbar, can search by user or by word in post or smth
+def is_friend(id):
+    return session["user_id"] == id or sql_queries.profile_permission(session["user_id"], id)

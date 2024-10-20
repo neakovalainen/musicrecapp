@@ -25,17 +25,6 @@ CREATE TABLE Friends (
     ON DELETE CASCADE
 );
 
-CREATE TABLE Comments (
-  id SERIAL PRIMARY KEY,
-  post_id INTEGER,
-  comment VARCHAR(255),
-  likes INTEGER DEFAULT 0,
-  creation_time  TIMESTAMP,
-
-  FOREIGN KEY (post_id) REFERENCES Posts(id)
-    ON DELETE CASCADE
-);
-
 CREATE TABLE Likes (
   id  SERIAL PRIMARY KEY,
   post_id  INTEGER,
@@ -56,6 +45,3 @@ CREATE TABLE Bios (
 
   FOREIGN KEY (user_id) REFERENCES Users(id)
 );
-
--- can the users just make any kind of text based posts like in twitter, or do 
--- we need seperate way of posting music?
